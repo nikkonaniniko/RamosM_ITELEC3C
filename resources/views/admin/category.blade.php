@@ -11,8 +11,10 @@
                 <x-welcome />
             </div> --}}
             <div class="container">
-                <a href="" class="btn btn-info">Create</a>
-                <table class="table">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card">
+                            <table class="table">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
@@ -33,6 +35,25 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+        
+            <div class="col-md-4">
+            <form method="" >
+                @csrf
+                <div class="form-group">
+                  <label for="cat_name">Category Name</label>
+                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter category name">
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                  <label for="user_id">User ID</label>
+                  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter User ID">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+        </div>
+    </div>
         </div>
     </div>
 </x-app-layout>
