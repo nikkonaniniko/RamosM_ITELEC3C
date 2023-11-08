@@ -30,10 +30,8 @@ Route::middleware([
     })->name('dashboard');
 });
 
-// Route::get('/category', function(){
-//     return view('admin.category');
-// })->name('AllCat');
-
-Route::get('/all/category',[CategoryController::class, 'index'])->name('AllCat');
-
-// Route::get('/add/category',[CategoryController::class, 'create'])->name('AddCat');
+Route::get('/all/category', [CategoryController::class, 'index'])->name('AllCat');
+Route::post('/add_category',[CategoryController::class, 'create']);
+// Route::get('/edit_category/{id}', [CategoryController::class, 'edit']);
+// Route::post('/edit_category_confirm/{id}',[CategoryController::class, 'edit_confirm']);
+// Route::get('/delete_category/{id}', [CategoryController::class, 'delete']);

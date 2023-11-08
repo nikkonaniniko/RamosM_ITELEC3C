@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-8">
-                        <div class="card">
+                        <div class="card p-2">
                             <table class="table">
                     <thead>
                         <tr>
@@ -21,6 +21,7 @@
                             <th scope="col">Category Name</th>
                             <th scope="col">User ID</th>
                             <th scope="col">Created At</th>
+                            {{-- <th scope="col" colspan="2">Actions</th> --}}
                         </tr>
                     </thead>
                     <tbody>
@@ -30,6 +31,8 @@
                                 <td>{{ $category->cat_name }}</td>
                                 <td>{{ $category->user_id }}</td>
                                 <td>{{ $category->created_at }}</td>
+                                {{-- <td><a href="{{url('edit_category', $category->id)}}"><i class="bi bi-pencil-square"></i></a></td>
+                                <td><a href="{{url('delete_category', $category->id)}}" onclick="return confirm('Are you sure you want to delete this category?')"><i class="bi bi-trash-fill text-danger"></i></a></td> --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -38,20 +41,22 @@
         </div>
         
             <div class="col-md-4">
-            <form method="" >
+                <div class="card p-3">
+            <form action="{{url('/add_category')}}" method="POST">
                 @csrf
-                <div class="form-group">
+                <div class="mb-3">
+                    <h3>Add a Category</h3>
                   <label for="cat_name">Category Name</label>
-                  <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter category name">
-                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  <input type="text" class="form-control" name="cat_name" placeholder="Enter category name">
                 </div>
-                <div class="form-group">
+                <div class="mb-3">
                   <label for="user_id">User ID</label>
-                  <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Enter User ID">
+                  <input type="number" class="form-control" name="user_id" placeholder="Enter User ID" min="1">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" name="submit">Submit</button>
               </form>
             </div>
+        </div>
         </div>
     </div>
         </div>
