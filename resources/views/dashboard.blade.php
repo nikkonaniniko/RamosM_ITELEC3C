@@ -26,11 +26,12 @@
                                 <th scope="row">{{ $user->id }}</th>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->created_at }}</td>
+                                <td>{{ $user->created_at->diffForHumans() }}</td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{-- {{$users->links()}} --}}
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@
                             <th scope="col">Category Name</th>
                             <th scope="col">User ID</th>
                             <th scope="col">Created At</th>
-                            {{-- <th scope="col" colspan="2">Actions</th> --}}
+                            <th scope="col" colspan="2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,13 +30,14 @@
                                 <th scope="row">{{ $category->id }}</th>
                                 <td>{{ $category->cat_name }}</td>
                                 <td>{{ $category->user_id }}</td>
-                                <td>{{ $category->created_at }}</td>
-                                {{-- <td><a href="{{url('edit_category', $category->id)}}"><i class="bi bi-pencil-square"></i></a></td>
-                                <td><a href="{{url('delete_category', $category->id)}}" onclick="return confirm('Are you sure you want to delete this category?')"><i class="bi bi-trash-fill text-danger"></i></a></td> --}}
+                                <td>{{ $category->created_at->diffForHumans() }}</td>
+                                <td><a href="{{url('edit_category', $category->id)}}"><i class="bi bi-pencil-square"></i></a></td>
+                                <td><a href="{{url('delete_category', $category->id)}}" onclick="return confirm('Are you sure you want to delete this category?')"><i class="bi bi-trash-fill text-danger"></i></a></td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
+                {{$categories->links()}}
             </div>
         </div>
         
