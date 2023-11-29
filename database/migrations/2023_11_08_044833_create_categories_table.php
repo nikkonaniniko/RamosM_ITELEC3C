@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('cat_name');
+            $table->string('cat_name')->required();
+            $table->string('image')->required();
             $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();

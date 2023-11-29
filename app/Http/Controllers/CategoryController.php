@@ -6,6 +6,8 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -17,20 +19,51 @@ class CategoryController extends Controller
     public function create(Request $request) {
         $validated = $request->validate([
             'cat_name' => 'required|unique:categories|max:255',
+            'image' => 'required|mimes:jpeg,png,jpg'
+        ], [
+            'cat_name.required' => 'Please input category name',
+            'cat_name.unique' => 'Category is already existing',
+            'cat_name.max' => 'Category name must be less than 255 characters',
+            'image.mimes' => 'File not supported'
         ]);
 
-        Category::create([
+        $image = null;
+
+        if ($request->hasFile('image')) {
+            $uploadedFile = $request->file('image');
+            $originalFileName = $uploadedFile->getClientOriginalName();
+
+            $filename = Str::uuid() . '_' . $originalFileName;
+
+            $imagePathLocal = $uploadedFile->storeAs('category', $originalFileName, 'public');
+            $image = $originalFileName;
+        }
+
+        Category::insert([
             'cat_name' => $request->cat_name,
+            'image' => $image,
             'user_id' => Auth::user()->id,
             'created_at' => Carbon::now()
         ]);
-        // $category = new Category;
-        // $category->cat_name = $request->cat_name;
-        // $category->user_id = $request->user_id;
 
-        // $category->save();
+        // $image = $request->file('image');
+
+        // $name_gen = hexdec(uniqid());
+        // $img_ext = strtolower($image->getClientOriginalExtension());
+        // $image_name = $name_gen . '.' . $img_ext;
+        // $up_loc = 'category/';
+        // $last_img = $image_name;
+
+        // $image->move($up_loc, $image_name);
+
+        // Category::create([
+        //     'cat_name' => $request->cat_name,
+        //     'image' => $last_img,
+        //     'user_id' => Auth::user()->id,
+        //     'created_at' => Carbon::now()
+        // ]);
         
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Category Created Successfully');
     }
 
     public function edit($id) {
@@ -39,19 +72,38 @@ class CategoryController extends Controller
     }
 
     public function edit_confirm(Request $request, $id) {
+        $validated = $request->validate([
+            'cat_name' => 'max:255',
+            'image' => 'nullable|mimes:jpeg,png,jpg'
+        ], [
+            'cat_name.max' => 'Category name must be less than 255 characters',
+            'image.mimes' => 'File not supported'
+        ]);
+
         $category = Category::find($id);
 
-        $category->cat_name = $request->cat_name;
-        $category->user_id = $request->user_id;
+        if ($request->hasFile('image')) {
+            $this->deleteandUploadFile($request->file('image'), $category->image);
+            $category->image = $request->file('image')->getClientOriginalName();
+        }
 
-        $category->save();
+        $category->update([
+            'cat_name' => $request->cat_name,
+        ]);
         
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Category Updated Successfully');
+    }
+
+    private function deleteAndUploadFile($uploadedFile, $existingFilePath) {
+        Storage::disk('public')->delete('category/' . $existingFilePath);
+
+        $originalFileName = $uploadedFile->getClientOriginalName();
+        $uploadedFile->storeAs('category', $originalFileName, 'public');
     }
 
     public function delete($id) {
         $category = Category::find($id);
         $category->delete();
-        return redirect()->back();
+        return redirect()->back()->with('message', 'Category Deleted Successfully');
     }
 }
